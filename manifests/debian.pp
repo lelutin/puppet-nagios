@@ -1,17 +1,10 @@
 class nagios::debian inherits nagios::base {
 
-    $nagios_packagename = $nagios_use_icinga ? {
-        "true" => icinga,
-        default => nagios3
-    }
-
-    $nagios_cfgdir = "/etc/$nagios_packagename"
-
     if ($nagios_use_icinga) {
         link { "/var/lib/nagios3": target => "/var/lib/icinga" }        
         file { 'nagios_init_script':
             path => "/etc/init.d/icinga",
-            source => [ "puppet://$server/modules/nagios/configs/icinga/icinga-init-script" ],
+            source => [ "puppet://$server/modules/nagios/configs/Debian/icinga/icinga-init-script" ],
             notify => Service['nagios'],
             mode => 0755, owner => root, group => root;
         }
