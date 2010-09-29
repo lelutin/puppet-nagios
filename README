@@ -8,6 +8,7 @@ as well we made it more modular to fit for multidistro usage.
 
 In it's current form, this module can be used on CentOS and Debian.
 
+Basic Icinga (http://www.icinga.org/) was support added for Debian (see below).
 
 Overview
 ========
@@ -102,6 +103,21 @@ Options to change the behavior of the nagios module:
                              may also need to flip "check_external_commands" in
                              "nagios.cfg" to enable this functionality.
 
+
+Icinga Support
+==============
+Use $nagios_use_icinga = 'true' to configure the Icinga fork instead of Nagios. 
+
+Issues
+------
+Right now puppet will complain "err: Could not run Puppet configuration client: 
+Could not find init script for 'icinga'" on the first attempt to install icinga. 
+Please copy the icinga init script from this module to /etc/init.d:
+  cp files/configs/Debian/icinga/icinga-init-script /etc/init.d/icinga
+
+Todo
+----
+- Fix the issues above 
 
 Examples
 ========
