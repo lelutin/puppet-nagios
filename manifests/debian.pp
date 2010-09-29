@@ -9,6 +9,7 @@ class nagios::debian inherits nagios::base {
             mode => 0755, owner => root, group => root;
         }
     
+        # icinga creates a symlink at /etc/apache/conf.d to this file
         file { 'icinga-apache-config':
             path => "/etc/icinga/apache2.conf",
             source => [ "puppet://$server/modules/nagios/configs/Debian/icinga/apache2.conf" ],
