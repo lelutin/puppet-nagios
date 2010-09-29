@@ -23,11 +23,9 @@ class nagios {
     }
     case $operatingsystem {
         'centos': {
-            $nagios_cfgdir = '/etc/nagios'
             include nagios::centos
         }
         'debian': {
-            $nagios_cfgdir = '/etc/nagios3'
             include nagios::debian
         }
         default: { fail("No such operatingsystem: $operatingsystem yet defined") }

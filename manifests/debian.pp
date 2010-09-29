@@ -1,5 +1,12 @@
 class nagios::debian inherits nagios::base {
 
+    $nagios_packagename = $nagios_use_icinga ? {
+        "true" => icinga,
+        default => nagios3
+    }
+
+    $nagios_cfgdir = "/etc/$nagios_packagename"
+
     Package['nagios'] { name => 'nagios3' }
 
     package { [ 'nagios-plugins', 'nagios-snmp-plugins','nagios-nrpe-plugin' ]:
