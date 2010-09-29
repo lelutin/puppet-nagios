@@ -8,8 +8,6 @@ class nagios::debian inherits nagios::base {
     $nagios_cfgdir = "/etc/$nagios_packagename"
 
     if ($nagios_use_icinga) {
-        notify { "\n\nUsing Icinga, nagios_packagename,: $nagios_packagename\n\n": }
-        #link { "/etc/nagios3": target => "/etc/icinga" }        
         link { "/var/lib/nagios3": target => "/var/lib/icinga" }        
         }
 
