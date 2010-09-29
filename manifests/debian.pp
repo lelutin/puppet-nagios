@@ -9,6 +9,13 @@ class nagios::debian inherits nagios::base {
 
     if ($nagios_use_icinga) {
         link { "/var/lib/nagios3": target => "/var/lib/icinga" }        
+        file { 'nagios_init_script':
+            path => "/etc/init.d/icinga",
+            source => [ "puppet://$server/modules/nagios/configs/icinga/icinga-init-script" ],
+            notify => Service['nagios'],
+            mode => 0755, owner => root, group => root;
+        }
+    
         }
 
     Package['nagios'] { name => $nagios_packagename } 
