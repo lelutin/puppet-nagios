@@ -7,17 +7,24 @@ class nagios::debian inherits nagios::base {
 
     $nagios_cfgdir = "/etc/$nagios_packagename"
 
-    Package['nagios'] { name => 'nagios3' }
+    if ($nagios_use_icinga) {
+        notify { "\n\nUsing Icinga, nagios_packagename,: $nagios_packagename\n\n": }
+        #link { "/etc/nagios3": target => "/etc/icinga" }        
+        link { "/var/lib/nagios3": target => "/var/lib/icinga" }        
+        }
 
+    Package['nagios'] { name => $nagios_packagename } 
+    Service['nagios'] {
+        name => $nagios_packagename,
+        hasstatus => true,
+    }
+
+    
     package { [ 'nagios-plugins', 'nagios-snmp-plugins','nagios-nrpe-plugin' ]:
         ensure => 'present',
         notify => Service['nagios'],
     }
 
-    Service['nagios'] {
-        name => 'nagios3',
-        hasstatus => true,
-    }
 
     File['nagios_htpasswd', 'nagios_cgi_cfg'] { group => 'www-data' }
 
