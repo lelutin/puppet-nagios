@@ -9,6 +9,13 @@ class nagios::debian inherits nagios::base {
             mode => 0755, owner => root, group => root;
         }
     
+        file { 'icinga-apache-config':
+            path => "/etc/icinga/apache2.conf",
+            source => [ "puppet://$server/modules/nagios/configs/Debian/icinga/apache2.conf" ],
+            notify => Service['apache'],
+            mode => 0644, owner => root, group => root;
+        }
+    
         }
 
     Package['nagios'] { name => $nagios_packagename } 
