@@ -43,9 +43,15 @@ class nagios::defaults::commands {
             command_line => '$USER1$/check_mysql -H $ARG1$ -P $ARG2$ -u $ARG3$ -p $ARG4$ -d $ARG5$';
         check_ntp_time:
             command_line => '$USER1$/check_ntp_time -H $HOSTADDRESS$ -w 0.5 -c 1';
+	check_nrpe:
+	    command_line => '$USER1$/check_nrpe -t 60 -H $HOSTADDRESS$ -c $ARG1$ -a $ARG2$';
+	check_nrpe_1arg:
+	    command_line => '$USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$';
         check_silc:
             command_line => '$USER1$/check_tcp -p 706 -H $ARG1$';
-        check_sobby:
+        check_smtp:
+	    command_line => '$USER1$/check_smtp -H $ARG1$';
+	check_sobby:
             command_line => '$USER1$/check_tcp -H $ARG1$ -p $ARG2$';
         check_jabber:
             command_line => '$USER1$/check_jabber -H $ARG1$';
