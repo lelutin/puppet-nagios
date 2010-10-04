@@ -154,7 +154,7 @@ $HOSTADDRESS$'
 node target {
 
 	# Monitor this host
-	$nagios_parent = 'router01'
+	$nagios_parents = 'router01'
 	include nagios::target
 
 	# monitor a service
