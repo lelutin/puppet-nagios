@@ -53,6 +53,10 @@ class nagios::defaults::commands {
 	    command_line => '$USER1$/check_smtp -H $ARG1$';
 	check_sobby:
             command_line => '$USER1$/check_tcp -H $ARG1$ -p $ARG2$';
+	check_traceroute:
+	    command_line => 'sudo $USER1$/check_traceroute.pl -H $ARG1$ -R $ARG2$';
+	check_traceroute_max_hops:
+	    command_line => 'sudo $USER1$/check_traceroute.pl -H $ARG1$ -R $ARG2$ -N $ARG3$';
         check_jabber:
             command_line => '$USER1$/check_jabber -H $ARG1$';
     }
