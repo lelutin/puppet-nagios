@@ -15,6 +15,8 @@ class nagios::defaults::commands {
             command_line => '$USER1$/check_udp -H $HOSTADDRESS$ -p $ARG1$';
         check_load:
             command_line => '$USER1$/check_load --warning=$ARG1$,$ARG2$,$ARG3$ --critical=$ARG4$,$ARG5$,$ARG6$';
+        check_dig:
+           command_line => '$USER1$/check_dig -H $HOSTADDRESS$ -l $ARG1$';
         check_disk:
             command_line => '$USER1$/check_disk -w $ARG1$ -c $ARG2$ -e -p $ARG3$';
         check_all_disks:
@@ -33,6 +35,8 @@ class nagios::defaults::commands {
             command_line => '$USER1$/check_http -H $ARG1$ -u $ARG2$';
         check_http_url_regex:
             command_line => '$USER1$/check_http -H $ARG1$ -u $ARG2$ -e $ARG3$';
+        check_http_url_string:
+            command_line => '$USER1$/check_http -H $ARG1$ -u $ARG2$ -s $ARG3$';
         check_https_url:
             command_line => '$USER1$/check_http --ssl -H $ARG1$ -u $ARG2$';
         check_https_url_regex:
