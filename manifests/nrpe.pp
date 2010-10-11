@@ -22,8 +22,8 @@ class nagios::nrpe {
     
     # default commands
     file { "$nagios_nrpe_cfgdir/nrpe.d/nrpe_commands.cfg":
-	    source => [ "puppet:///site-nagios/configs/nrpe/nrpe_commands.cfg",
-			"puppet:///nagios/nrpe/nrpe_commands.cfg" ],
+	    source => [ "puppet:///modules/site-nagios/configs/nrpe/nrpe_commands.cfg",
+			"puppet:///modules/nagios/nrpe/nrpe_commands.cfg" ],
 	    owner => root, group => root, mode => 644;
     }
 
