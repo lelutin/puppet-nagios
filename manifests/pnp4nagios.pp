@@ -5,8 +5,9 @@ class nagios::pnp4nagios {
               ensure => installed }
 
 
-    # unfortunatly i didn't find a way to use nagios_host and nagios_service definition, because 
-    # imho puppet can't handle the "name" variable needed in these 2 definitions
+    # unfortunatly there is still no way to use nagios_host and nagios_service definition
+    # to create templates
+    # http://projects.puppetlabs.com/issues/1180
     # so we need to copy a file here.
  
     file { 'pnp4nagios-templates.cfg':
