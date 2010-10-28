@@ -7,7 +7,8 @@ define nagios::plugin(
       default => "/usr/lib/nagios/plugins/$name",
     },
     ensure => $ensure,
-    source => "puppet://$server/modules/nagios/plugins/$name",
+    source => [ "puppet:///modules/site-nagios/plugins/$name",
+		"puppet:///modules/nagios/plugins/$name" ],
     require => Package['nagios-plugins'],
     owner => root, group => 0, mode => 0755;
   }
