@@ -26,7 +26,7 @@ class nagios {
              $nagios_cfgdir = '/etc/nagios'
             include nagios::centos
         }
-        'debian': {
+        'Ubuntu', 'debian': {
             $nagios_packagename = $nagios_use_icinga ? {
                 "true" => icinga,
                 default => nagios3
