@@ -9,9 +9,9 @@ class nagios::nsca::server {
   }
   
   file { '/etc/nsca.cfg':
-    source => [ "puppet://${server}/site-nagios/nsca/{$fqdn}/nsca.cfg",
-                "puppet://${server}/site-nagios/nsca/nsca.cfg",
-                "puppet://${server}/nagios/nsca/nsca.cfg" ],
+    source => [ "puppet:///modules/site-nagios/nsca/{$fqdn}/nsca.cfg",
+                "puppet:///modules/site-nagios/nsca/nsca.cfg",
+                "puppet:///modules/nagios/nsca/nsca.cfg" ],
     owner  => 'nagios',
     group  => 'nogroup',
     mode   => '400',

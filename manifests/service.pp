@@ -10,28 +10,24 @@ define nagios::service (
     $notification_period = '',
     $notification_options = '',
     $contact_groups = '',
-    $use = 'absent',
-    $service_description = 'absent',
-    $use_nrpe = '',
-    $nrpe_args = '' )
+    $use = 'generic-service',
+    $service_description = 'absent' )
 {
 
     # TODO: this resource should normally accept all nagios_host parameters
 
     $real_name = "${hostname}_${name}"
 
-    if ($use_nrpe == 'true') {
-	$real_check_command = "check_nrpe!$check_command!\"$nrpe_args\""
-    }
-    else { 
-	$real_check_command = "$check_command"
-    }
-
     @@nagios_service { "${real_name}":
         ensure => $ensure,
-        check_command => $real_check_command,
+        check_command => $check_command,
         host_name => $host_name,
+        use => $use,
         notify => Service[nagios],
+        service_description => $service_description ?{
+          'absent' => $name,
+          default => $service_description
+        }
     }
 
     if ($check_period != '') {
@@ -62,17 +58,8 @@ define nagios::service (
         Nagios_service["${real_name}"] { notification_options => $notification_options }
     }
 
-    if ($use == 'absent') {
-        Nagios_service["${real_name}"] { use => 'generic-service' }
-    } else {
-        Nagios_service["${real_name}"] { use => $use }
+    if ($contact_groups != '') {
+        Nagios_service["${real_name}"] { contact_groups => $contact_groups }
     }
-
-    if ($service_description == 'absent') {
-        Nagios_service["${real_name}"] { service_description => $name }
-    } else {
-        Nagios_service["${real_name}"] { service_description => $service_description }
-    }
-
 }
 
