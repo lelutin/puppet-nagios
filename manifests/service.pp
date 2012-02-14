@@ -21,7 +21,12 @@ define nagios::service (
     $real_name = "${hostname}_${name}"
 
     if ($use_nrpe == 'true') {
-        $real_check_command = "check_nrpe!$check_command!\"$nrpe_args\""
+        if ($nrpe_args != '') { 
+	    $real_check_command = "check_nrpe!$check_command!\"$nrpe_args\"" 
+	}
+	else { 
+	    $real_check_command = "check_nrpe_1arg!$check_command" 
+	}
     }
     else {
         $real_check_command = "$check_command"
@@ -30,7 +35,7 @@ define nagios::service (
 
     @@nagios_service { "${real_name}":
         ensure => $ensure,
-        check_command => $check_command,
+        check_command => $real_check_command,
         host_name => $host_name,
         use => $use,
         notify => Service[nagios],
