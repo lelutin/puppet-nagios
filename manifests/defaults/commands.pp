@@ -15,10 +15,14 @@ class nagios::defaults::commands {
             command_line => '$USER1$/check_http -H $ARG1$ -u $ARG2$';
           check_http_url_regex:
             command_line => '$USER1$/check_http -H $ARG1$ -u $ARG2$ -e $ARG3$';
+          check_http_url_regex_content:
+            command_line => '$USER1$/check_http -H $ARG1$ -u $ARG2$ -r $ARG3$';
           check_https_url:
             command_line => '$USER1$/check_http --ssl -H $ARG1$ -u $ARG2$';
           check_https_url_regex:
             command_line => '$USER1$/check_http --ssl -H $ARG1$ -u $ARG2$ -e $ARG3$';
+          check_https_url_regex_content:
+            command_line => '$USER1$/check_http --ssl -H $ARG1$ -u $ARG2$ -r $ARG3$';
           check_mysql_db:
             command_line => '$USER1$/check_mysql -H $ARG1$ -P $ARG2$ -u $ARG3$ -p $ARG4$ -d $ARG5$';
           check_ntp_time:
@@ -53,10 +57,10 @@ class nagios::defaults::commands {
             command_line => '$USER1$/check_disk -w $ARG1$ -c $ARG2$ -e';
           check_ssh:
             command_line => '$USER1$/check_ssh $HOSTADDRESS$';
-          check_ssh_port:
-            command_line => '$USER1$/check_ssh -p $ARG1$ $HOSTADDRESS$';
-          check_ssh_port_host:
-            command_line => '$USER1$/check_ssh -p $ARG1$ $ARG2$';
+	  check_ssh_port:
+	    command_line => '$USER1$/check_ssh -p $ARG1$ $HOSTADDRESS$';
+	  check_ssh_port_host:
+	    command_line => '$USER1$/check_ssh -p $ARG1$ $ARG2$';
           check_http:
             command_line => '$USER1$/check_http -H $HOSTADDRESS$ -I $HOSTADDRESS$';
           check_https:
