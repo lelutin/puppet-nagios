@@ -11,7 +11,7 @@ define nagios::service (
     $notification_options = '',
     $contact_groups = '',
     $use = 'generic-service',
-    $service_description = 'absent', 
+    $service_description = 'absent',
     $use_nrpe = '',
     $nrpe_args = '',
     $nrpe_timeout = 10 )
@@ -34,7 +34,6 @@ define nagios::service (
     else {
         $real_check_command = "$check_command"
     }
-
 
     @@nagios_service { "${real_name}":
         ensure => $ensure,
