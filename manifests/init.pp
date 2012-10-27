@@ -34,8 +34,6 @@ class nagios {
 
             $nagios_cfgdir = "/etc/$nagios_packagename"
 
-            notify {"nagios_cfgdir: $nagios_cfgdir":}
-
             include nagios::debian
         }
         default: { fail("No such operatingsystem: $operatingsystem yet defined") }
