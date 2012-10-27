@@ -3,10 +3,10 @@ class nagios::nrpe::base {
     if $nagios_nrpe_cfgdir == '' { $nagios_nrpe_cfgdir = '/etc/nagios' }
     if $processorcount == '' { $processorcount = 1 }
     
-    package { 	"nagios-nrpe-server": ensure => present;
-		    "nagios-plugins-basic": ensure => present;
-		    "libwww-perl": ensure => present;   # for check_apache
-	    }
+    package {   "nagios-nrpe-server": ensure => present;
+        "nagios-plugins-basic": ensure => present;
+        "libwww-perl": ensure => present;   # for check_apache
+      }
 
     # Special-case lenny. the package doesn't exist
     if $lsbdistcodename != 'lenny' {
@@ -14,12 +14,12 @@ class nagios::nrpe::base {
     }
     
     file { [ $nagios_nrpe_cfgdir, "$nagios_nrpe_cfgdir/nrpe.d" ]: 
-	ensure => directory }
+  ensure => directory }
 
     if $nagios_nrpe_dont_blame == '' { $nagios_nrpe_dont_blame = 1 }
     file { "$nagios_nrpe_cfgdir/nrpe.cfg":
-	    content => template('nagios/nrpe/nrpe.cfg'),
-	    owner => root, group => 0, mode => 644;
+      content => template('nagios/nrpe/nrpe.cfg'),
+      owner => root, group => 0, mode => 644;
     }
     
     # default commands
@@ -40,11 +40,12 @@ class nagios::nrpe::base {
         command_line => "${nagios_plugin_dir}/check_load -w ${warning_1_threshold},${warning_5_threshold},${warning_15_threshold} -c ${critical_1_threshold},${critical_5_threshold},${critical_15_threshold}",
     }
 
-    service { "nagios-nrpe-server":
-	    ensure    => running,
-	    enable    => true,
-	    pattern   => "nrpe",
-	    subscribe => File["$nagios_nrpe_cfgdir/nrpe.cfg"],
-            require   => Package["nagios-nrpe-server"],
+    service { 'nagios-nrpe-server':
+      ensure    => running,
+      enable    => true,
+      pattern   => 'nrpe',
+      hasstatus => false,
+      subscribe => File["$nagios_nrpe_cfgdir/nrpe.cfg"],
+      require   => Package['nagios-nrpe-server'],
     }
 }
