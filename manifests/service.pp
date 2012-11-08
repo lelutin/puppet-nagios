@@ -21,7 +21,7 @@ define nagios::service (
 
     $real_name = "${hostname}_${name}"
 
-    if ($use_nrpe == 'true') {
+    if ($use_nrpe == true) {
 	include nagios::command::nrpe_timeout
 
         if ($nrpe_args != '') { 

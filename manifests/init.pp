@@ -28,7 +28,7 @@ class nagios {
         }
         'Ubuntu', 'debian': {
             $nagios_packagename = $nagios_use_icinga ? {
-                "true" => icinga,
+                true => icinga,
                 default => nagios3
             }
 

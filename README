@@ -74,7 +74,7 @@ nagios server define a service that will check the NRPE command 'check_cpu' on
 the current node:
 
     nagios::service { 'CPU Usage':
-      use_nrpe => 'true',
+      use_nrpe => true,
       check_command => "check_cpu",
       nrpe_args => "-t 60"
     }
@@ -216,7 +216,7 @@ Options to change the behavior of the nagios module:
 
 Icinga Support
 ==============
-Use $nagios_use_icinga = 'true' to configure the Icinga fork instead of Nagios. 
+Use $nagios_use_icinga = true to configure the Icinga fork instead of Nagios. 
 
 Issues
 ------
