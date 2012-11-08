@@ -73,7 +73,7 @@ nagios server define a service that will check the NRPE command 'check_cpu' on
 the current node:
 
     nagios::service { 'CPU Usage':
-      use_nrpe => 'true',
+      use_nrpe => true,
       check_command => "check_cpu",
       nrpe_args => "-t 60"
     }
