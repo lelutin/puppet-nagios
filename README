@@ -201,7 +201,8 @@ For PNP4Nagios integration information, please see README.pnp4nagios
 
 Icinga Support
 ==============
-Use $nagios_use_icinga = true to configure the Icinga fork instead of Nagios. 
+Set the use_icinga parameter to true on the main class (nagios) to configure
+the Icinga fork instead of Nagios.
 
 Issues
 ------

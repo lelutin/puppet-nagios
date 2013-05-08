@@ -1,6 +1,8 @@
-class nagios::debian inherits nagios::base {
+class nagios::debian (
+  $package_name
+) inherits nagios::base {
 
-    if ($nagios_use_icinga) {
+    if $nagios::use_icinga {
         link { "/var/lib/nagios3": target => "/var/lib/icinga" }        
         file { 'nagios_init_script':
             path => "/etc/init.d/icinga",
@@ -20,9 +22,9 @@ class nagios::debian inherits nagios::base {
     
         }
 
-    Package['nagios'] { name => $nagios_packagename } 
+    Package['nagios'] { name => $package_name }
     Service['nagios'] {
-        name => $nagios_packagename,
+        name => $package_name,
         hasstatus => true,
     }
 
