@@ -214,14 +214,6 @@ Todo
 ----
 - Fix the issues above 
 
-PNP4Nagios integration
-======================
-"PNP is an addon to Nagios which analyzes performance data provided by plugins and 
-stores them automatically into RRD-databases (Round Robin Databases, see RRD Tool)."
-(from http://docs.pnp4nagios.org/pnp-0.6/start)
-
-see README.pnp4nagios
-
 
 Examples
 ========
