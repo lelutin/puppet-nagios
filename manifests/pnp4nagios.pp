@@ -1,9 +1,10 @@
 class nagios::pnp4nagios {
+
   include nagios::defaults::pnp4nagios
 
   package { 'pnp4nagios':
-            ensure => installed }
-
+    ensure => installed
+  }
 
   # unfortunatly we can't use the nagios_host and nagios_service
   # definition to define templates, so we need to copy a file here.
@@ -14,18 +15,18 @@ class nagios::pnp4nagios {
     source => [ 'puppet:///modules/site_nagios/pnp4nagios/pnp4nagios-templates.cfg',
                 'puppet:///modules/nagios/pnp4nagios/pnp4nagios-templates.cfg' ],
     mode   => '0644',
-    owner  => root,
-    group  => root,
+    owner  => 'root',
+    group  => 0,
     notify => Service['nagios'],
   }
 
   file { 'apache.conf':
     path    => '/etc/pnp4nagios/apache.conf',
-    source  => [ 'puppet:///modules/site_nagios/pnp4nagios/apache.conf',
-                 'puppet:///modules/nagios/pnp4nagios/apache.conf' ],
+    source  => ['puppet:///modules/site_nagios/pnp4nagios/apache.conf',
+                'puppet:///modules/nagios/pnp4nagios/apache.conf' ],
     mode    => '0644',
-    owner   => root,
-    group   => root,
+    owner   => 'root',
+    group   => 0,
     notify  => Service['apache'],
     require => Package['pnp4nagios'],
   }
@@ -37,16 +38,16 @@ class nagios::pnp4nagios {
     source => [ 'puppet:///modules/site_nagios/pnp4nagios/npcd',
                 'puppet:///modules/nagios/pnp4nagios/npcd' ],
     mode   => '0644',
-    owner  => root,
-    group  => root,
+    owner  => 'root',
+    group  => 0,
     notify => Service['npcd'];
   }
 
   service { 'npcd':
-      ensure    => running,
-      enable    => true,
-      hasstatus => true,
-      require   => Package['pnp4nagios'],
+    ensure    => running,
+    enable    => true,
+    hasstatus => true,
+    require   => Package['pnp4nagios'],
   }
 
   # modify action.gif
@@ -56,8 +57,8 @@ class nagios::pnp4nagios {
     source => [ 'puppet:///modules/site_nagios/pnp4nagios/action.gif',
                 'puppet:///modules/nagios/pnp4nagios/action.gif' ],
     mode   => '0644',
-    owner  => root,
-    group  => root,
+    owner  => 'root',
+    group  => 0,
     notify => Service['nagios'];
   }
 }

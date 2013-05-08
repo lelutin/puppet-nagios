@@ -1,6 +1,7 @@
 class nagios::command::imap_pop3 {
-  case $operatingsystem {
-    debian,ubuntu: { }  # Debian/Ubuntu already define those checks
+
+  case $::operatingsystem {
+    'debian','ubuntu': { }  # Debian/Ubuntu already define those checks
     default: {
       nagios_command {
         'check_imap':
@@ -19,4 +20,5 @@ class nagios::command::imap_pop3 {
     'check_managesieve':
       command_line => '$USER1$/check_tcp -H $ARG1$ -p 2000';
   }
+
 }

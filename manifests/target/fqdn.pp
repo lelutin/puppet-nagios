@@ -1,10 +1,12 @@
-class nagios::target::fqdn(
+class nagios::target::fqdn (
   $hostgroups = 'absent',
   $parents = 'absent'
 ) {
-  class{'nagios::target':
-    address => $::fqdn,
+
+  class { 'nagios::target':
+    address    => $::fqdn,
     hostgroups => $hostgroups,
-    parents => $parents
+    parents    => $parents
   }
+
 }

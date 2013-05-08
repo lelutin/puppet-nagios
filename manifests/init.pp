@@ -35,7 +35,7 @@ class nagios(
     }
     'Ubuntu','debian': {
       $package_name = $use_icinga ? {
-        true => 'icinga',
+        true    => 'icinga',
         default => 'nagios3'
       }
 
@@ -44,7 +44,9 @@ class nagios(
         package_name => $package_name,
       }
     }
-    default: { fail("No such operatingsystem: ${::operatingsystem} yet defined") }
+    default: {
+      fail("No such operatingsystem: ${::operatingsystem} yet defined")
+    }
   }
   if $manage_munin {
     include nagios::munin

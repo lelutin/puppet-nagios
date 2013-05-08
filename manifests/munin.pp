@@ -1,4 +1,5 @@
 class nagios::munin {
+
   include munin::plugins::base
 
   munin::plugin::deploy {
