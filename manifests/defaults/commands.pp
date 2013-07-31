@@ -18,7 +18,7 @@ class nagios::defaults::commands {
           check_https_url:
             command_line => '$USER1$/check_http --ssl -H $ARG1$ -u $ARG2$';
           check_https_url_regex:
-            command_line => '$USER1$/check_http --ssl -H $ARG1$ -u $ARG2$ -e $ARG3$';
+            command_line => '$USER1$/check_http -H $ARG1$ -p $ARG2$ -u $ARG3$ -e $ARG4$';
           check_mysql_db:
             command_line => '$USER1$/check_mysql -H $ARG1$ -P $ARG2$ -u $ARG3$ -p $ARG4$ -d $ARG5$';
           check_ntp_time:
