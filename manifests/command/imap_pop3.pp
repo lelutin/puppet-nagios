@@ -1,5 +1,6 @@
+# manage mail checks
 class nagios::command::imap_pop3 {
-  case $operatingsystem {
+  case $::operatingsystem {
     debian,ubuntu: { }  # Debian/Ubuntu already define those checks
     default: {
       nagios_command {
@@ -17,6 +18,8 @@ class nagios::command::imap_pop3 {
     'check_pop3_ssl':
       command_line => '$USER1$/check_pop -H $ARG1$ -p $ARG2$ -S';
     'check_managesieve':
+      command_line => '$USER1$/check_tcp -H $ARG1$ -p 4190';
+    'check_managesieve_legacy':
       command_line => '$USER1$/check_tcp -H $ARG1$ -p 2000';
   }
 }
