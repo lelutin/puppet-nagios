@@ -19,7 +19,8 @@ class nagios(
   $httpd = 'apache',
   $allow_external_cmd = false,
   $manage_shorewall = false,
-  $manage_munin = false
+  $manage_munin = false,
+  $use_icinga = false
 ) {
   case $nagios::httpd {
     'absent': { }
@@ -32,8 +33,13 @@ class nagios(
       $cfgdir = '/etc/nagios'
       include nagios::centos
     }
-    'debian': {
-      $cfgdir = '/etc/nagios3'
+    'Ubuntu','debian': {
+      $nagios_packagename = $use_icinga ? {
+        true => 'icinga',
+        default => 'nagios3'
+      }
+
+      $cfgdir = "/etc/$nagios_packagename"
       include nagios::debian
     }
     default: { fail("No such operatingsystem: ${::operatingsystem} yet defined") }

@@ -1,16 +1,37 @@
 class nagios::debian inherits nagios::base {
 
-    Package['nagios'] { name => 'nagios3' }
+    if ($nagios_use_icinga) {
+        link { "/var/lib/nagios3": target => "/var/lib/icinga" }        
+        file { 'nagios_init_script':
+            path => "/etc/init.d/icinga",
+            source => [ "puppet://$server/modules/nagios/configs/Debian/icinga/icinga-init-script" ],
+            notify => Service['nagios'],
+            mode => 0755, owner => root, group => root;
+        }
+    
+        # icinga creates a symlink at /etc/apache/conf.d to this file
+        file { 'icinga-apache-config':
+            path => "/etc/icinga/apache2.conf",
+            source => [ "puppet://$server/modules/site-nagios/configs/Debian/icinga/apache2.conf" ,
+                       "puppet://$server/modules/nagios/configs/Debian/icinga/apache2.conf" ],
+            notify => Service['apache'],
+            mode => 0644, owner => root, group => root;
+        }
+    
+        }
 
+    Package['nagios'] { name => $nagios_packagename } 
+    Service['nagios'] {
+        name => $nagios_packagename,
+        hasstatus => true,
+    }
+
+    
     package { [ 'nagios-plugins', 'nagios-snmp-plugins','nagios-nrpe-plugin' ]:
         ensure => 'present',
         notify => Service['nagios'],
     }
 
-    Service['nagios'] {
-        name => 'nagios3',
-        hasstatus => true,
-    }
 
     File['nagios_htpasswd', 'nagios_cgi_cfg'] { group => 'www-data' }
 

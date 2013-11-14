@@ -8,6 +8,7 @@ as well we made it more modular to fit for multidistro usage.
 
 In it's current form, this module can be used on CentOS and Debian.
 
+Basic Icinga (http://www.icinga.org/) was support added for Debian (see below).
 
 Overview
 ========
@@ -73,7 +74,7 @@ nagios server define a service that will check the NRPE command 'check_cpu' on
 the current node:
 
     nagios::service { 'CPU Usage':
-      use_nrpe => 'true',
+      use_nrpe => true,
       check_command => "check_cpu",
       nrpe_args => "-t 60"
     }
@@ -197,6 +198,30 @@ PNP4Nagios integration
 ======================
 
 For PNP4Nagios integration information, please see README.pnp4nagios
+
+Icinga Support
+==============
+Use $nagios_use_icinga = true to configure the Icinga fork instead of Nagios. 
+
+Issues
+------
+Right now puppet will complain "err: Could not run Puppet configuration client: 
+Could not find init script for 'icinga'" on the first attempt to install icinga. 
+Please copy the icinga init script from this module to /etc/init.d:
+  cp files/configs/Debian/icinga/icinga-init-script /etc/init.d/icinga
+
+Todo
+----
+- Fix the issues above 
+
+PNP4Nagios integration
+======================
+"PNP is an addon to Nagios which analyzes performance data provided by plugins and 
+stores them automatically into RRD-databases (Round Robin Databases, see RRD Tool)."
+(from http://docs.pnp4nagios.org/pnp-0.6/start)
+
+see README.pnp4nagios
+
 
 Examples
 ========
