@@ -10,6 +10,30 @@ In it's current form, this module can be used on CentOS and Debian.
 
 Basic Icinga (http://www.icinga.org/) was support added for Debian (see below).
 
+
+Upgrade Notes
+=============
+
+The nagios::target bits have been reworked, the notable changes that
+may affect an upgrade are:
+
+. previous versions had nagios::target::nat which used the $::fqdn for
+the address part of nagios::target, this has been renamed to
+nagios::target::fqdn to be more clear. if you were using
+nagios::target::nat then you will need to change those references to
+::fqdn
+
+. previous versions of this module used $::fqdn for the nagios::target
+address, now it is using $::ipaddress. If you need $::fqdn, use
+nagios::target::fqdn instead of nagios::target
+
+. previous versions of nagios_host used the parameter named 'ip', that
+has been changed to 'address'
+
+The class nagios::nsca::server was renamed to nagios::nsca. If you were
+using nagios::nsca::server, you'll need to now use nagios::nsca instead.
+
+
 Overview
 ========
 
@@ -88,26 +112,6 @@ and what it is going to execute:
     nagios::nrpe::command { 'debsums':
       check_command => '/usr/lib/nagios/plugins/check_debsums openssh-server'
     }
-
-
-Upgrade Notes
-=============
-
-The nagios::target bits have been reworked, the notable changes that
-may affect an upgrade are:
-
-. previous versions had nagios::target::nat which used the $::fqdn for
-the address part of nagios::target, this has been renamed to
-nagios::target::fqdn to be more clear. if you were using
-nagios::target::nat then you will need to change those references to
-::fqdn
-
-. previous versions of this module used $::fqdn for the nagios::target
-address, now it is using $::ipaddress. If you need $::fqdn, use
-nagios::target::fqdn instead of nagios::target
-
-. previous versions of nagios_host used the parameter named 'ip', that
-has been changed to 'address'
 
 
 IRC bot
