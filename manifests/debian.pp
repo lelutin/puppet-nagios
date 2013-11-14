@@ -35,6 +35,13 @@ class nagios::debian (
                   "puppet:///modules/nagios/configs/${::operatingsystem}/icinga/icinga.cfg",
                   'puppet:///modules/nagios/configs/icinga/icinga.cfg' ],
     }
+    File['nagios_cgi_cfg'] {
+      source => [ "puppet:///modules/site_nagios/configs/${::fqdn}/icinga/cgi.cfg",
+                  "puppet:///modules/site_nagios/configs/${::operatingsystem}/icinga/cgi.cfg",
+                  'puppet:///modules/site_nagios/configs/icinga/cgi.cfg',
+                  "puppet:///modules/nagios/configs/${::operatingsystem}/icinga/cgi.cfg",
+                  'puppet:///modules/nagios/configs/icinga/cgi.cfg'],
+    }
 
 
   }
