@@ -27,6 +27,11 @@ class nagios::debian (
       mode   => '0644',
     }
 
+    File['nagios_main_cfg'] {
+      path => "${nagios::defaults::vars::int_cfgdir}/icinga.cfg",
+    }
+
+
   }
 
   Package['nagios'] { name => $package_name }
