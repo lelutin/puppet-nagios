@@ -16,38 +16,41 @@ class nagios::base {
 
   # this file should contain all the nagios_puppet-paths:
   file { 'nagios_main_cfg':
-    path   => "${nagios::defaults::vars::int_cfgdir}/nagios.cfg",
-    source => [ "puppet:///modules/site_nagios/configs/${::fqdn}/nagios.cfg",
+    path    => "${nagios::defaults::vars::int_cfgdir}/nagios.cfg",
+    source  => ["puppet:///modules/site_nagios/configs/${::fqdn}/nagios.cfg",
                 "puppet:///modules/site_nagios/configs/${::operatingsystem}/nagios.cfg",
                 'puppet:///modules/site_nagios/configs/nagios.cfg',
                 "puppet:///modules/nagios/configs/${::operatingsystem}/nagios.cfg",
-                'puppet:///modules/nagios/configs/nagios.cfg' ],
-    notify => Service['nagios'],
-    owner  => 'root',
-    group  => 0,
-    mode   => '0644',
+                'puppet:///modules/nagios/configs/nagios.cfg'],
+    owner   => 'root',
+    group   => 0,
+    mode    => '0644',
+    require => Package['nagios'],
+    notify  => Service['nagios'],
   }
 
   file { 'nagios_cgi_cfg':
-    path   => "${nagios::defaults::vars::int_cfgdir}/cgi.cfg",
-    source => [ "puppet:///modules/site_nagios/configs/${::fqdn}/cgi.cfg",
+    path    => "${nagios::defaults::vars::int_cfgdir}/cgi.cfg",
+    source  => ["puppet:///modules/site_nagios/configs/${::fqdn}/cgi.cfg",
                 "puppet:///modules/site_nagios/configs/${::operatingsystem}/cgi.cfg",
                 'puppet:///modules/site_nagios/configs/cgi.cfg',
                 "puppet:///modules/nagios/configs/${::operatingsystem}/cgi.cfg",
-                'puppet:///modules/nagios/configs/cgi.cfg' ],
-    owner  => 'root',
-    group  => 0,
-    mode   => '0644',
-    notify => Service['apache'],
+                'puppet:///modules/nagios/configs/cgi.cfg'],
+    owner   => 'root',
+    group   => 0,
+    mode    => '0644',
+    require => Package['nagios'],
+    notify  => Service['apache'],
   }
 
   file { 'nagios_htpasswd':
-    path   => "${nagios::defaults::vars::int_cfgdir}/htpasswd.users",
-    source => [ 'puppet:///modules/site_nagios/htpasswd.users',
-                'puppet:///modules/nagios/htpasswd.users' ],
-    owner  => 'root',
-    group  => 'apache',
-    mode   => '0640',
+    path    => "${nagios::defaults::vars::int_cfgdir}/htpasswd.users",
+    source  => ['puppet:///modules/site_nagios/htpasswd.users',
+                'puppet:///modules/nagios/htpasswd.users'],
+    owner   => 'root',
+    group   => 'apache',
+    mode    => '0640',
+    require => Package['nagios'],
   }
 
   file { 'nagios_private':
@@ -58,17 +61,19 @@ class nagios::base {
     owner   => 'root',
     group   => 'nagios',
     mode    => '0750',
+    require => Package['nagios'],
     notify  => Service['nagios'],
   }
 
   file { 'nagios_private_resource_cfg':
-    path   => "${nagios::defaults::vars::int_cfgdir}/private/resource.cfg",
-    source => [ "puppet:///modules/site_nagios/configs/${::operatingsystem}/private/resource.cfg.${::architecture}",
-                "puppet:///modules/nagios/configs/${::operatingsystem}/private/resource.cfg.${::architecture}" ],
-    notify => Service['nagios'],
-    owner  => 'root',
-    group  => 'nagios',
-    mode   => '0640',
+    path    => "${nagios::defaults::vars::int_cfgdir}/private/resource.cfg",
+    source  => ["puppet:///modules/site_nagios/configs/${::operatingsystem}/private/resource.cfg.${::architecture}",
+                "puppet:///modules/nagios/configs/${::operatingsystem}/private/resource.cfg.${::architecture}"],
+    owner   => 'root',
+    group   => 'nagios',
+    mode    => '0640',
+    require => Package['nagios'],
+    notify  => Service['nagios'],
   }
 
   file { 'nagios_confd':
@@ -79,6 +84,7 @@ class nagios::base {
     owner   => 'root',
     group   => 'nagios',
     mode    => '0750',
+    require => Package['nagios'],
     notify  => Service['nagios'],
   }
   Nagios_command <<||>>
@@ -181,10 +187,11 @@ class nagios::base {
         "${nagios::defaults::vars::int_cfgdir}/conf.d/nagios_timeperiod.cfg" ]:
     ensure  => file,
     replace => false,
-    notify  => Service['nagios'],
     owner   => 'root',
     group   => 0,
     mode    => '0644',
+    require => File['nagios_confd'],
+    notify  => Service['nagios'],
   }
 
   # manage nagios cfg files
@@ -197,6 +204,7 @@ class nagios::base {
     owner   => 'root',
     group   => 0,
     mode    => '0755',
+    require => Package['nagios'],
     notify  => Service['nagios'],
   }
 }
