@@ -28,7 +28,12 @@ class nagios::debian (
     }
 
     File['nagios_main_cfg'] {
-      path => "${nagios::defaults::vars::int_cfgdir}/icinga.cfg",
+      path   => "${nagios::defaults::vars::int_cfgdir}/icinga.cfg",
+      source => [ "puppet:///modules/site_nagios/configs/${::fqdn}/icinga/icinga.cfg",
+                  "puppet:///modules/site_nagios/configs/${::operatingsystem}/icinga/icinga.cfg",
+                  'puppet:///modules/site_nagios/configs/icinga/icinga.cfg',
+                  "puppet:///modules/nagios/configs/${::operatingsystem}/icinga/icinga.cfg",
+                  'puppet:///modules/nagios/configs/icinga/icinga.cfg' ],
     }
 
 
