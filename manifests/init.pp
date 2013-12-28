@@ -16,10 +16,11 @@
 
 # manage nagios
 class nagios(
-  $httpd = 'apache',
+  $httpd              = 'apache',
   $allow_external_cmd = false,
-  $manage_shorewall = false,
-  $manage_munin = false
+  $manage_shorewall   = false,
+  $manage_munin       = false,
+  $service_atboot     = true,
 ) {
   case $nagios::httpd {
     'absent': { }
