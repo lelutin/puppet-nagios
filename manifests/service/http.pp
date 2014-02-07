@@ -8,7 +8,7 @@ define nagios::service::http(
     $check_domain = 'absent',
     $port = '80',
     $check_url = '/',
-    $check_code = 'OK',
+    $check_code = '200',
     $use = 'generic-service',
     $ssl_mode = false
 ){
