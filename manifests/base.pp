@@ -87,6 +87,27 @@ class nagios::base {
   Nagios_serviceextinfo <<||>>
   Nagios_service <<||>>
   Nagios_timeperiod <<||>>
+  if $nagios::purge_resources {
+    resources {
+      [
+        'nagios_command',
+        'nagios_contactgroup',
+        'nagios_contact',
+        'nagios_hostdependency',
+        'nagios_hostescalation',
+        'nagios_hostextinfo',
+        'nagios_hostgroup',
+        'nagios_host',
+        'nagios_servicedependency',
+        'nagios_serviceescalation',
+        'nagios_servicegroup',
+        'nagios_serviceextinfo',
+        'nagios_service',
+        'nagios_timeperiod',
+      ]:
+        purge => true;
+    }
+  }
 
   Nagios_command <||> {
     target  => "${cfg_dir}/conf.d/nagios_command.cfg",
@@ -190,6 +211,8 @@ class nagios::base {
       owner   => root,
       group   => 0,
       mode    => '0644';
+    # unfortuantely resource purging only works on the default path and
+    # because we changed it above -> link the default path
     "${cfg_dir}/nagios_command.cfg":
       ensure => link,
       target => "${cfg_dir}/conf.d/nagios_command.cfg";

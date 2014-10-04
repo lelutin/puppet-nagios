@@ -21,6 +21,7 @@ class nagios(
   $manage_shorewall   = false,
   $manage_munin       = false,
   $service_atboot     = true,
+  $purge_resources    = true,
 ) {
   case $nagios::httpd {
     'absent': { }
