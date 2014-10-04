@@ -105,7 +105,8 @@ class nagios::base {
         'nagios_service',
         'nagios_timeperiod',
       ]:
-        purge => true;
+        notify => Service['nagios'],
+        purge  => true;
     }
   }
 
