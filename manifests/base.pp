@@ -17,6 +17,16 @@ class nagios::base {
   $cfg_dir = $nagios::defaults::vars::int_cfgdir
   # this file should contain all the nagios_puppet-paths:
   file{
+    'nagios_cfgdir':
+      ensure  => directory,
+      path    => $cfg_dir,
+      recurse => true,
+      purge   => true,
+      force   => true,
+      notify  => Service['nagios'],
+      owner   => root,
+      group   => root,
+      mode    => '0755';
     'nagios_main_cfg':
       path    => "${cfg_dir}/nagios.cfg",
       source  => ["puppet:///modules/site_nagios/configs/${::fqdn}/nagios.cfg",
