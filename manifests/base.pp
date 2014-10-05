@@ -20,6 +20,7 @@ class nagios::base {
     'nagios_cfgdir':
       ensure  => directory,
       path    => $cfg_dir,
+      alias   => nagios_confd,
       recurse => true,
       purge   => true,
       force   => true,
