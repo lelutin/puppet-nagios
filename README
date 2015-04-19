@@ -206,8 +206,7 @@ Usage example:
 ~~~
 node nagios {
 
-  include nagios::apache
-  include nagios::defaults
+  class { 'nagios::apache': } -> class { 'nagios::defaults': }
 
   # Declare another nagios command
   nagios::command { http_port:
