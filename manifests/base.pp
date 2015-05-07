@@ -22,8 +22,9 @@ class nagios::base {
                         "puppet:///modules/site_nagios/configs/nagios.cfg",
                         "puppet:///modules/nagios/configs/${::operatingsystem}/nagios.cfg",
                         "puppet:///modules/nagios/configs/nagios.cfg" ],
-            notify => Service['nagios'],
-            mode => 0644, owner => root, group => root;
+            notify  => Service['nagios'],
+            require => Package['nagios'],
+            mode    => 0644, owner => root, group => root;
     }
 
     file { 'nagios_cgi_cfg':
@@ -35,12 +36,14 @@ class nagios::base {
                     "puppet:///modules/nagios/configs/cgi.cfg" ],
         mode => '0644', owner => 'root', group => 0,
         notify => Service['apache'],
+        require => Package['nagios'],
     }
 
     file { 'nagios_htpasswd':
         path => "${nagios::defaults::vars::int_cfgdir}/htpasswd.users",
         source => [ "puppet:///modules/site_nagios/htpasswd.users",
                     "puppet:///modules/nagios/htpasswd.users" ],
+        require => Package['nagios'],
         mode => 0640, owner => root, group => apache;
     }
 
@@ -53,6 +56,7 @@ class nagios::base {
           mode    => '0750',
           owner   => 'root',
           group   => 'nagios',
+          require => Package['nagios'],
           notify  => Service['nagios'],
       }
 
@@ -76,6 +80,7 @@ class nagios::base {
         purge => true,
         recurse => true,
         notify => Service['nagios'],
+        require => Package['nagios'],
         mode => '0750', owner => root, group => nagios;
     }
     Nagios_command <<||>>
@@ -179,6 +184,7 @@ class nagios::base {
         ensure => file,
         replace => false,
         notify => Service['nagios'],
+        require => Package['nagios'],
         mode => 0644, owner => root, group => 0;
     }
 
@@ -190,6 +196,7 @@ class nagios::base {
         recurse => true,
         purge => true,
         notify => Service['nagios'],
+        require => Package['nagios'],
         mode => 0755, owner => root, group => root;
     }
 }
