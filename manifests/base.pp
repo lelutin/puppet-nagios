@@ -44,17 +44,26 @@ class nagios::base {
         mode => 0640, owner => root, group => apache;
     }
 
-    file { 'nagios_private':
-        path => "${nagios::defaults::vars::int_cfgdir}/private/",
-        ensure => directory,
-        purge => true,
-        recurse => true,
-        notify => Service['nagios'],
-        mode => '0750', owner => root, group => nagios;
+    if $::operatingsystem == 'Centos' {
+      file { 'nagios_private':
+          ensure  => directory,
+          path    => "${nagios::defaults::vars::int_cfgdir}/private/",
+          purge   => true,
+          recurse => true,
+          mode    => '0750',
+          owner   => 'root',
+          group   => 'nagios',
+          notify  => Service['nagios'],
+      }
+
+      $resource_cfg_dir = "${nagios::defaults::vars::int_cfgdir}/private"
+    }
+    else {
+      $resource_cfg_dir = $nagios::defaults::vars::int_cfgdir
     }
 
     file { 'nagios_private_resource_cfg':
-        path => "${nagios::defaults::vars::int_cfgdir}/private/resource.cfg",
+        path   => "${resource_cfg_dir}/resource.cfg",
         source => [ "puppet:///modules/site_nagios/configs/${::operatingsystem}/private/resource.cfg.${::architecture}",
                     "puppet:///modules/nagios/configs/${::operatingsystem}/private/resource.cfg.${::architecture}" ],
         notify => Service['nagios'],
