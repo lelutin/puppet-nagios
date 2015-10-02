@@ -24,7 +24,12 @@ class nagios(
   case $nagios::httpd {
     'absent': { }
     'lighttpd': { include ::lighttpd }
-    'apache': { include ::apache }
+    'apache': {
+      include ::apache
+      if $::operatingsystem == 'debian' {
+        include nagios::debian::apache
+      }
+    }
     default: { include ::apache }
   }
   case $::operatingsystem {
