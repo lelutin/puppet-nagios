@@ -24,7 +24,12 @@ class nagios(
   case $nagios::httpd {
     'absent': { }
     'lighttpd': { include ::lighttpd }
-    'apache': { include ::apache }
+    'apache': {
+      include ::apache
+      if $::operatingsystem == 'debian' {
+        include nagios::debian::apache
+      }
+    }
     default: { include ::apache }
   }
   case $::operatingsystem {
@@ -36,7 +41,9 @@ class nagios(
       $cfgdir = '/etc/nagios3'
       include nagios::debian
     }
-    default: { fail("No such operatingsystem: ${::operatingsystem} yet defined") }
+    default: {
+      fail("No such operatingsystem: ${::operatingsystem} yet defined")
+    }
   }
   if $manage_munin {
     include nagios::munin
