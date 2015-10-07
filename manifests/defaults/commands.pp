@@ -10,15 +10,15 @@ class nagios::defaults::commands {
           check_dummy:
             command_line => '$USER1$/check_dummy $ARG1$';
           check_https_cert:
-            command_line => '$USER1$/check_http --ssl -C 20 -H $HOSTADDRESS$ -I $HOSTADDRESS$';
+            command_line => '$USER1$/check_http --ssl --sni -C 20 -H $HOSTADDRESS$ -I $HOSTADDRESS$';
           check_http_url:
             command_line => '$USER1$/check_http -H $ARG1$ -u $ARG2$';
           check_http_url_regex:
             command_line => '$USER1$/check_http -H $ARG1$ -p $ARG2$ -u $ARG3$ -e $ARG4$';
           check_https_url:
-            command_line => '$USER1$/check_http --ssl -H $ARG1$ -u $ARG2$';
+            command_line => '$USER1$/check_http --ssl --sni -H $ARG1$ -u $ARG2$';
           check_https_url_regex:
-            command_line => '$USER1$/check_http --ssl -H $ARG1$ -u $ARG2$ -e $ARG3$';
+            command_line => '$USER1$/check_http --ssl --sni -H $ARG1$ -u $ARG2$ -e $ARG3$';
           check_mysql_db:
             command_line => '$USER1$/check_mysql -H $ARG1$ -P $ARG2$ -u $ARG3$ -p $ARG4$ -d $ARG5$';
           check_ntp_time:
@@ -60,17 +60,17 @@ class nagios::defaults::commands {
           check_http:
             command_line => '$USER1$/check_http -H $HOSTADDRESS$ -I $HOSTADDRESS$';
           check_https:
-            command_line => '$USER1$/check_http --ssl -H $HOSTADDRESS$ -I $HOSTADDRESS$';
+            command_line => '$USER1$/check_http --ssl --sni -H $HOSTADDRESS$ -I $HOSTADDRESS$';
           check_https_cert:
-            command_line => '$USER1$/check_http --ssl -C 20 -H $HOSTADDRESS$ -I $HOSTADDRESS$';
+            command_line => '$USER1$/check_http --ssl --sni -C 20 -H $HOSTADDRESS$ -I $HOSTADDRESS$';
           check_http_url:
             command_line => '$USER1$/check_http -H $ARG1$ -u $ARG2$';
           check_http_url_regex:
             command_line => '$USER1$/check_http -H $ARG1$ -p $ARG2$ -u $ARG3$ -e $ARG4$';
           check_https_url:
-            command_line => '$USER1$/check_http --ssl -H $ARG1$ -u $ARG2$';
+            command_line => '$USER1$/check_http --ssl --sni -H $ARG1$ -u $ARG2$';
           check_https_url_regex:
-            command_line => '$USER1$/check_http --ssl -H $ARG1$ -u $ARG2$ -e $ARG3$';
+            command_line => '$USER1$/check_http --ssl --sni -H $ARG1$ -u $ARG2$ -e $ARG3$';
           check_mysql:
             command_line => '$USER1$/check_mysql -H $ARG1$ -P $ARG2$ -u $ARG3$ -p $ARG4$';
           check_mysql_db:
