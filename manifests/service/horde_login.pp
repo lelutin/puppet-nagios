@@ -1,9 +1,9 @@
 # a horde login check
 define nagios::service::horde_login(
-  $username,
   $password,
   $url,
-  $ensure = 'present',
+  $username = $name,
+  $ensure   = 'present',
 ){
   nagios::service{
     "horde_${name}":
