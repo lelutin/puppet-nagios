@@ -6,7 +6,8 @@ define nagios::service::gpgkey(
 ){
   validate_slength($name,40,40)
   require ::nagios::plugins::gpg
-  $gpg_home = $nagios::plugins::gpg::gpg_home
+  $gpg_home      = $nagios::plugins::gpg::gpg_home
+  $gpg_keyserver = $nagios::plugins::gpg::keyserver
 
   exec{"manage_key_${name}":
     user  => nagios,
@@ -19,7 +20,7 @@ define nagios::service::gpgkey(
 
   if $ensure == 'present' {
     Exec["manage_key_${name}"]{
-      command => "gpg --homedir ${gpg_home} --recv-keys ${name}",
+      command => "gpg --keyserver ${gpg_keyserver} --homedir ${gpg_home} --recv-keys ${name}",
       unless  => "gpg --homedir ${gpg_home} --list-keys ${name}",
       before  => Nagios::Service["check_gpg_${name}"],
     }
