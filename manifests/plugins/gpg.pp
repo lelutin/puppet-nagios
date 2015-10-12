@@ -37,7 +37,7 @@ done
       require => File[$gpg_home];
   }
   nagios_command {
-    'check_gnupg':
+    'check_gpg':
       command_line => "\$USER1\$/check_gpg --gnupg-homedir ${gpg_home} -w \$ARG1\$ \$ARG2\$",
       require      => Nagios::Plugin['check_gpg'],
   }
