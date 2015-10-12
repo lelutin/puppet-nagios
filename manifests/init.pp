@@ -22,6 +22,7 @@ class nagios(
   $manage_munin       = false,
   $service_atboot     = true,
   $purge_resources    = true,
+  $gpgkey_checks      = {},
 ) {
   case $nagios::httpd {
     'absent': { }
@@ -32,15 +33,16 @@ class nagios(
   case $::operatingsystem {
     'centos': {
       $cfgdir = '/etc/nagios'
-      include nagios::centos
+      include ::nagios::centos
     }
     'debian': {
       $cfgdir = '/etc/nagios3'
-      include nagios::debian
+      include ::nagios::debian
     }
     default: { fail("No such operatingsystem: ${::operatingsystem} yet defined") }
   }
   if $manage_munin {
-    include nagios::munin
+    include ::nagios::munin
   }
+  create_resources('nagios::service::gpgkey',$gpgkey_checks)
 }
