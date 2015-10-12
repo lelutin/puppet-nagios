@@ -8,7 +8,10 @@ define nagios::service::gpgkey(
   require ::nagios::plugins::gpg
   $gpg_home = $nagios::plugins::gpg::gpg_home
 
-  exec{"manage_key_${name}": }
+  exec{"manage_key_${name}":
+    user  => nagios,
+    group => nagios,
+  }
   nagios::service{
     "check_gpg_${name}":
       ensure => $ensure;
