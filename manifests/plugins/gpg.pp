@@ -1,7 +1,7 @@
 # check_gpg from
 # https://github.com/lelutin/nagios-plugins/blob/master/check_gpg
 class nagios::plugins::gpg {
-  require ::gnupg
+  require ::gpg
   nagios::plugin{'check_gpg':
     source => 'nagios/plugins/check_gpg',
   }
