@@ -43,6 +43,7 @@ debug "current timestamp: $now"
 
 warning_threshold=
 homedir=
+homedir_path=~/.gnupg
 for arg in $*; do
     case $arg in
         "-w")
@@ -68,8 +69,9 @@ for arg in $*; do
                 echo "UNKNOWN: homedir '$2' does not exist or is not a directory"
                 exit 3
             fi
-            homedir="--homedir $2"
-            debug "setting homedir to '$homedir'"
+            homedir_path=$2
+            homedir="--homedir ${homedir_path}"
+            debug "setting homedir to '$homedir_path'"
 
             shift 2
         ;;
@@ -84,7 +86,7 @@ key="$1"
 
 # GPG is too stupid to error out when asked to refresh a key that's not in the
 # local keyring so we need to perform another call to verify this first.
-output=$( { gpg $homedir --list-key "$key" >/dev/null && gpg $homedir --refresh --keyserver hkps://hkps.pool.sks-keyservers.net --keyserver-options ca-cert-file=$homedir/sks-keyservers.netCA.pem "$key" >/dev/null; } 2>&1 )
+output=$( { gpg $homedir --list-key "$key" >/dev/null && gpg $homedir --refresh --keyserver hkps://hkps.pool.sks-keyservers.net --keyserver-options ca-cert-file=$homedir_path/sks-keyservers.netCA.pem "$key" >/dev/null; } 2>&1 )
 if [ $? -ne 0 ]; then
     echo "UNKNOWN: $output"
     exit 3
