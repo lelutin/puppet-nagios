@@ -1,8 +1,6 @@
 # check_gpg from
 # https://github.com/lelutin/nagios-plugins/blob/master/check_gpg
-class nagios::plugins::gpg(
-  $keyserver = 'hkp://keys.mayfirst.org',
-) {
+class nagios::plugins::gpg {
   require ::gpg
   nagios::plugin{'check_gpg':
     source => 'nagios/plugins/check_gpg',
@@ -16,25 +14,12 @@ class nagios::plugins::gpg(
       group   => nagios,
       mode    => '0600',
       require => Nagios::Plugin['check_gpg'];
-    '/etc/cron.daily/update_nagios_gpgkeys':
-      content => "#!/bin/bash
-function gpg() {
-  cmd=\$1
-  outout=\$(su - nagios -s /bin/bash -c 'gpg --homedir ${gpg_home} --logger-fd 1 \${cmd}')
-  if [ \$? -gt 0 ]; then
-   echo \$output
-   exit 1
-  fi
-}
-
-su - nagios -s /bin/bash -c 'gpg --homedir ${gpg_home} --with-fingerprint --list-keys --with-colons | grep \"^pub\" -A 1 | tail -n 1 | cut -f10 -d\":\" | sort --random-sort | while read key; do
-  gpg \"--keyserver ${keyserver} --recv-keys \${key}\"
-done
-",
-      owner   => root,
+    "${gpg_home}/sks-keyservers.netCA.pem":
+      source  => 'puppet:///modules/nagios/plugin_data/sks-keyservers.netCA.pem',
+      owner   => nagios,
       group   => 0,
-      mode    => '0700',
-      require => File[$gpg_home];
+      mode    => '0400',
+      before  => Nagios_command['check_gpg'];
   }
   nagios_command {
     'check_gpg':

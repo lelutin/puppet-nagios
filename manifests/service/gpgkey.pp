@@ -6,8 +6,8 @@ define nagios::service::gpgkey(
 ){
   validate_slength($name,40,40)
   require ::nagios::plugins::gpg
-  $gpg_home      = $nagios::plugins::gpg::gpg_home
-  $gpg_keyserver = $nagios::plugins::gpg::keyserver
+  $gpg_home = $nagios::plugins::gpg::gpg_home
+  $gpg_cmd  = "gpg --homedir ${gpg_home}"
 
   exec{"manage_key_${name}":
     user  => nagios,
@@ -20,8 +20,8 @@ define nagios::service::gpgkey(
 
   if $ensure == 'present' {
     Exec["manage_key_${name}"]{
-      command => "gpg --keyserver ${gpg_keyserver} --homedir ${gpg_home} --recv-keys ${name}",
-      unless  => "gpg --homedir ${gpg_home} --list-keys ${name}",
+      command => "${gpg_cmd} --keyserver hkps://hkps.pool.sks-keyservers.net --keyserver-options ca-cert-file=${gpg_home}/sks-keyservers.netCA.pem --recv-keys ${name}",
+      unless  => "${gpg_cmd} --list-keys ${name}",
       before  => Nagios::Service["check_gpg_${name}"],
     }
 
@@ -39,8 +39,8 @@ define nagios::service::gpgkey(
     }
   } else {
     Exec["manage_key_${name}"]{
-      command => "gpg --batch --homedir ${gpg_home} --delete-key ${name}",
-      onlyif  => "gpg --homedir ${gpg_home} --list-keys ${name}",
+      command => "${gpg_cmd} --batch --delete-key ${name}",
+      onlyif  => "${gpg_cmd} --list-keys ${name}",
       require => Nagios::Service["check_gpg_${name}"],
     }
   }
