@@ -1,8 +1,9 @@
 # define a gpgkey to be watched
 define nagios::service::gpgkey(
-  $ensure   = 'present',
-  $warning  = '14',
-  $key_info = undef,
+  $ensure         = 'present',
+  $warning        = '14',
+  $key_info       = undef,
+  $check_interval = 60,
 ){
   validate_slength($name,40,40)
   require ::nagios::plugins::gpg
@@ -26,7 +27,8 @@ define nagios::service::gpgkey(
     }
 
     Nagios::Service["check_gpg_${name}"]{
-      check_command => "check_gpg!${warning}!${name}",
+      check_command  => "check_gpg!${warning}!${name}",
+      check_interval => $check_interval,
     }
     if $key_info {
       Nagios::Service["check_gpg_${name}"]{
