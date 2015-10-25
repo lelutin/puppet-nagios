@@ -5,7 +5,7 @@ define nagios::service (
   $host_name             = $::fqdn,
   $check_command         = 'absent',
   $check_period          = undef,
-  $normal_check_interval = undef,
+  $check_interval        = undef,
   $retry_check_interval  = undef,
   $max_check_attempts    = undef,
   $notification_interval = undef,
@@ -59,8 +59,8 @@ define nagios::service (
       Nagios_service[$real_name] { check_period => $check_period }
     }
 
-    if $normal_check_interval {
-      Nagios_service[$real_name] { normal_check_interval => $normal_check_interval }
+    if $check_interval {
+      Nagios_service[$real_name] { check_interval => $check_interval }
     }
 
     if $retry_check_interval {

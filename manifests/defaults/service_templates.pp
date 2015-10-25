@@ -21,7 +21,7 @@ class nagios::defaults::service_templates {
       notification_interval        => '0',
       is_volatile                  => '0',
       check_period                 => '24x7',
-      normal_check_interval        => '5',
+      check_interval               => '5',
       retry_check_interval         => '1',
       max_check_attempts           => '4',
       notification_period          => '24x7',
