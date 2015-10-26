@@ -23,6 +23,6 @@ class nagios::command::imap_pop3 {
     'check_managesieve_legacy':
       command_line => '$USER1$/check_tcp -H $ARG1$ -p 2000';
     'check_imap_login':
-      command_line => '$USER1$/check_imap_login -H $ARG1$ -u $ARG2$ -p $ARG3$ -w $ARG4$ -c $ARG5$';
+      command_line => '$USER1$/check_imap_login -s -H $ARG1$ -u $ARG2$ -p $ARG3$ -w $ARG4$ -c $ARG5$';
   }
 }
