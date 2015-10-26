@@ -8,7 +8,6 @@ class nagios::target(
 ){
   @@nagios_host { $::fqdn:
     address => $address,
-    alias   => $nagios_alias,
     use     => $use,
   }
   # Watch out with using aliases: they need to be unique throughout *all*
