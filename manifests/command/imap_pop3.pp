@@ -1,6 +1,6 @@
 # manage mail checks
 class nagios::command::imap_pop3 {
-  require ::nagios::plugins::imap_login
+  require ::nagios::plugins::mail_login
   case $::operatingsystem {
     'Debian','Ubuntu': { }  # Debian/Ubuntu already define those checks
     default: {
@@ -24,5 +24,7 @@ class nagios::command::imap_pop3 {
       command_line => '$USER1$/check_tcp -H $ARG1$ -p 2000';
     'check_imap_login':
       command_line => '$USER1$/check_imap_login -s -H $ARG1$ -u $ARG2$ -p $ARG3$ -w $ARG4$ -c $ARG5$';
+    'check_pop3_login':
+      command_line => '$USER1$/check_pop3_login -s -H $ARG1$ -u $ARG2$ -p $ARG3$ -w $ARG4$ -c $ARG5$';
   }
 }
