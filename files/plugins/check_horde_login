@@ -13,27 +13,36 @@
 #
 
 import sys, os, requests, getopt
+from time import time
 
 def usage():
     print sys.argv[0] + " -u username "+ \
                           "-p password " + \
-                          "-s server path"
+                          "-s server path" + \
+                          "[-w warning_in_s] " + \
+                          "[-c critical_in_s]"
     sys.exit(1)
 
 def main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "u:p:s:h")
+        opts, args = getopt.getopt(sys.argv[1:], "u:p:s:h:w:c")
     except getopt.GetoptError:
         usage()
         return 3
 
     user = url = password = None
+    warning = 5
+    critical = 10
 
     for o, a in opts:
         if o == "-u":
             user = a
         elif o == "-p":
             password = a
+        elif o == "-w":
+            warning = a
+        elif o == "-c":
+            critical = a
         elif o == "-s":
             url = a + "/login.php"
         elif o == '-h':
@@ -53,14 +62,30 @@ def main():
              }
 
 
-    r = requests.post(url, data=params, allow_redirects=False)
-    # on a successfully login we are redirected to the mailbox
+    timestamp = time()
+    try:
+      r = requests.post(url, data=params, allow_redirects=False)
+    except Exception, e:
+      print "CRITICAL Horde Login Failed: %s" % e
+      sys.exit(2)
+
+    timestamp = time() - timestamp
     if r.status_code == 302:
-        print "OK"
-        sys.exit(0)
+        if timestamp < warning:
+          status = "OK"
+          exitcode = 0
+        if timestamp >= warning:
+          status = "WARNING"
+          exitcode = 1
+        if timestamp >= critical:
+          status = "CRITICAL"
+          exitcode = 2
     else:
-        print "Error"
-        sys.exit(2)
+        status   = "ERROR"
+        exitcode = 2
+    # on a successfully login we are redirected to the mailbox
+    print '%s Horde Login | response_time=%.3fs;%.3f;%.3f' % (status, timestamp, warning, critical)
+    sys.exit(exitcode)
 
 
 if __name__ == "__main__":
