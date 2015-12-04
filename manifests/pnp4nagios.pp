@@ -1,8 +1,9 @@
+# configure pnp4nagios
 class nagios::pnp4nagios {
   include nagios::defaults::pnp4nagios
 
-  package { 'pnp4nagios':
-            ensure => installed }
+  package { [ 'pnp4nagios', 'pnp4nagios-web-config-nagios3']:
+    ensure => installed }
 
 
   # unfortunatly we can't use the nagios_host and nagios_service
@@ -21,8 +22,9 @@ class nagios::pnp4nagios {
 
   file { 'apache.conf':
     path    => '/etc/pnp4nagios/apache.conf',
-    source  => [ 'puppet:///modules/site_nagios/pnp4nagios/apache.conf',
-                 'puppet:///modules/nagios/pnp4nagios/apache.conf' ],
+    source  => [
+      'puppet:///modules/site_nagios/pnp4nagios/apache.conf',
+      'puppet:///modules/nagios/pnp4nagios/apache.conf' ],
     mode    => '0644',
     owner   => root,
     group   => root,
