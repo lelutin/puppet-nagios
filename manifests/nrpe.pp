@@ -5,7 +5,12 @@ class nagios::nrpe (
   $plugin_dir = '',
   $server_address = '',
   $allowed_hosts = '',
+  $dont_blame = '1',
 ) {
+
+  if !($dont_blame in ['0', '1']) {
+    fail('Unrecognized value for $dont_blame, must be one of "0", or "1".')
+  }
 
   case $::operatingsystem {
     'FreeBSD': {

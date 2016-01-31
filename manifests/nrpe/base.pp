@@ -7,6 +7,7 @@ class nagios::nrpe::base {
   $plugin_dir = $::nagios::nrpe::real_plugin_dir
   $server_address = $::nagios::nrpe::server_address
   $allowed_hosts = $::nagios::nrpe::allowed_hosts
+  $dont_blame = $::nagios::nrpe::dont_blame
 
   package{['nagios-nrpe-server', 'nagios-plugins-basic', 'libwww-perl']:
     ensure => installed;
@@ -22,7 +23,6 @@ class nagios::nrpe::base {
       ensure => directory;
   }
 
-  if $nagios_nrpe_dont_blame == '' { $nagios_nrpe_dont_blame = 1 }
   file { "${cfg_dir}/nrpe.cfg":
     content => template('nagios/nrpe/nrpe.cfg'),
     owner   => root,
