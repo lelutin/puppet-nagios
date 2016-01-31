@@ -5,7 +5,7 @@ class nagios::nrpe (
   $plugin_dir = '',
   $server_address = '',
   $allowed_hosts = '',
-  $dont_blame = '1',
+  $dont_blame = '0',
 ) {
 
   if !($dont_blame in ['0', '1']) {
