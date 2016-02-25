@@ -8,12 +8,12 @@ define nagios::nrpe::command (
     fail('Either one of $command_line or $source must be given to nagios::nrpe::command.' )
   }
 
-  $nagios_nrpe_cfgdir = $nagios::nrpe::base::nagios_nrpe_cfgdir
+  $cfg_dir = $nagios::nrpe::real_cfg_dir
 
-  file{"${nagios_nrpe_cfgdir}/nrpe.d/${name}_command.cfg":
+  file{"${cfg_dir}/nrpe.d/${name}_command.cfg":
     ensure  => $ensure,
     notify  => Service['nagios-nrpe-server'],
-    require => File ["${nagios_nrpe_cfgdir}/nrpe.d" ],
+    require => File ["${cfg_dir}/nrpe.d" ],
     owner   => 'root',
     group   => 0,
     mode    => '0644';
@@ -21,12 +21,12 @@ define nagios::nrpe::command (
 
   case $source {
     '': {
-      File["${nagios_nrpe_cfgdir}/nrpe.d/${name}_command.cfg"] {
+      File["${cfg_dir}/nrpe.d/${name}_command.cfg"] {
         content => template('nagios/nrpe/nrpe_command.erb'),
       }
     }
     default: {
-      File["${nagios_nrpe_cfgdir}/nrpe.d/${name}_command.cfg"] {
+      File["${cfg_dir}/nrpe.d/${name}_command.cfg"] {
         source => $source,
       }
     }

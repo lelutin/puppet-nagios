@@ -1,7 +1,13 @@
 # basic nrpe stuff
 class nagios::nrpe::base {
 
-  if $nagios_nrpe_cfgdir == '' { $nagios_nrpe_cfgdir = '/etc/nagios' }
+  # Import all variables from entry point
+  $cfg_dir = $::nagios::nrpe::real_cfg_dir
+  $pid_file = $::nagios::nrpe::real_pid_file
+  $plugin_dir = $::nagios::nrpe::real_plugin_dir
+  $server_address = $::nagios::nrpe::server_address
+  $allowed_hosts = $::nagios::nrpe::allowed_hosts
+  $dont_blame = $::nagios::nrpe::dont_blame
 
   package{['nagios-nrpe-server', 'nagios-plugins-basic', 'libwww-perl']:
     ensure => installed;
@@ -13,12 +19,11 @@ class nagios::nrpe::base {
   }
 
   file{
-    [ $nagios_nrpe_cfgdir, "${nagios_nrpe_cfgdir}/nrpe.d" ]:
+    [ $cfg_dir, "${cfg_dir}/nrpe.d" ]:
       ensure => directory;
   }
 
-  if $nagios_nrpe_dont_blame == '' { $nagios_nrpe_dont_blame = 1 }
-  file { "${nagios_nrpe_cfgdir}/nrpe.cfg":
+  file { "${cfg_dir}/nrpe.cfg":
     content => template('nagios/nrpe/nrpe.cfg'),
     owner   => root,
     group   => 0,
@@ -40,14 +45,14 @@ class nagios::nrpe::base {
   $critical_5_threshold = 9 * $::processorcount
   $critical_15_threshold = 8 * $::processorcount
   nagios::nrpe::command {'check_load':
-    command_line => "${nagios_plugin_dir}/check_load -w ${warning_1_threshold},${warning_5_threshold},${warning_15_threshold} -c ${critical_1_threshold},${critical_5_threshold},${critical_15_threshold}",
+    command_line => "${plugin_dir}/check_load -w ${warning_1_threshold},${warning_5_threshold},${warning_15_threshold} -c ${critical_1_threshold},${critical_5_threshold},${critical_15_threshold}",
   }
 
   service{'nagios-nrpe-server':
     ensure    => running,
     enable    => true,
     pattern   => 'nrpe',
-    subscribe => File["${nagios_nrpe_cfgdir}/nrpe.cfg"],
+    subscribe => File["${cfg_dir}/nrpe.cfg"],
     require   => Package['nagios-nrpe-server'],
   }
 }
