@@ -121,6 +121,23 @@ class nagios::base {
       purge  => $::nagios::purge_resources
   }
 
+  # make sure nagios resources are defined after nagios is
+  # installed and the nagios_cfgdir resource is present
+  File['nagios_cfgdir'] -> Nagios_command <||>
+  File['nagios_cfgdir'] -> Nagios_contactgroup <||>
+  File['nagios_cfgdir'] -> Nagios_contact <||>
+  File['nagios_cfgdir'] -> Nagios_hostdependency <||>
+  File['nagios_cfgdir'] -> Nagios_hostescalation <||>
+  File['nagios_cfgdir'] -> Nagios_hostextinfo <||>
+  File['nagios_cfgdir'] -> Nagios_hostgroup <||>
+  File['nagios_cfgdir'] -> Nagios_host <||>
+  File['nagios_cfgdir'] -> Nagios_servicedependency <||>
+  File['nagios_cfgdir'] -> Nagios_serviceescalation <||>
+  File['nagios_cfgdir'] -> Nagios_servicegroup <||>
+  File['nagios_cfgdir'] -> Nagios_serviceextinfo <||>
+  File['nagios_cfgdir'] -> Nagios_service <||>
+  File['nagios_cfgdir'] -> Nagios_timeperiod <||>
+
   if ( $nagios::storeconfigs == true ) {
     include ::nagios::storeconfigs
   }
