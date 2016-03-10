@@ -100,27 +100,25 @@ class nagios::base {
       mode    => '0644';
   }
 
-  if $nagios::purge_resources {
-    resources {
-      [
-        'nagios_command',
-        'nagios_contactgroup',
-        'nagios_contact',
-        'nagios_hostdependency',
-        'nagios_hostescalation',
-        'nagios_hostextinfo',
-        'nagios_hostgroup',
-        'nagios_host',
-        'nagios_servicedependency',
-        'nagios_serviceescalation',
-        'nagios_servicegroup',
-        'nagios_serviceextinfo',
-        'nagios_service',
-        'nagios_timeperiod',
-      ]:
-        notify => Service['nagios'],
-        purge  => true;
-    }
+  resources {
+    [
+      'nagios_command',
+      'nagios_contactgroup',
+      'nagios_contact',
+      'nagios_hostdependency',
+      'nagios_hostescalation',
+      'nagios_hostextinfo',
+      'nagios_hostgroup',
+      'nagios_host',
+      'nagios_servicedependency',
+      'nagios_serviceescalation',
+      'nagios_servicegroup',
+      'nagios_serviceextinfo',
+      'nagios_service',
+      'nagios_timeperiod',
+    ]:
+      notify => Service['nagios'],
+      purge  => $::nagios::purge_resources
   }
 
   if ( $nagios::storeconfigs == true ) {
