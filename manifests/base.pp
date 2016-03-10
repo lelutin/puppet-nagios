@@ -69,9 +69,9 @@ class nagios::base {
 
   if $cfg_dir == '/etc/nagios3' {
     file{'/etc/nagios':
-      ensure  => link,
-      target  => $cfg_dir,
-      require => Package['nagios'],
+      ensure => link,
+      target => $cfg_dir,
+      before => File['nagios_cfgdir'],
     }
   }
 
@@ -94,6 +94,7 @@ class nagios::base {
       ensure  => file,
       replace => false,
       notify  => Service['nagios'],
+      require => File['nagios_cfgdir'],
       owner   => root,
       group   => 0,
       mode    => '0644';
